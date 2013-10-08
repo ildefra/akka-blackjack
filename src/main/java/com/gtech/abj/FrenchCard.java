@@ -3,11 +3,25 @@ package com.gtech.abj;
 public class FrenchCard {
 
 public enum FrenchRank {
-TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
+TWO('2', 2),    THREE('3', 3),  FOUR('4', 4),   FIVE('5', 5),
+SIX('6', 6),    SEVEN('7', 7),  EIGHT('8', 8),  NINE('9', 9),
+TEN('T', 10),   JACK('J', 10),  QUEEN('Q', 10), KING('K', 10),  ACE('A', 1);
 
-//TODO: int value
+private final char code;
+private final int  value;
+
+private FrenchRank(final char code, final int value) {
+    this.code   = code;
+    this.value  = value;
 }
+
+@Override
+public String toString() { return String.valueOf(code); }
+}
+
+
 public enum FrenchSuit {HEART, DIAMOND, CLUB, SPADE }
+
 
 public final FrenchRank rank;
 public final FrenchSuit suit;
