@@ -39,7 +39,8 @@ public void onReceive(final Object message) throws Exception {
                 shouldHit() ? new DealerStand() : new DealerHit(), self());
     } else unhandled(message);
 }
-private boolean shouldHit() {    
+private boolean shouldHit() {
+    log.debug("Should I hit?");
     return hand.score() < 17;
 }
 }

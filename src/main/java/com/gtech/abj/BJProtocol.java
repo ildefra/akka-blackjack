@@ -15,6 +15,14 @@ public String toString() {return "RegisterPlayer"; }
 }
 
 
+public static final class Reset implements Serializable {
+private static final long serialVersionUID = 3637194318630895220L;
+
+@Override
+public String toString() {return "Reset"; }
+}
+
+
 public static final class AskBet implements Serializable {
 private static final long serialVersionUID = 681653139963713221L;
 

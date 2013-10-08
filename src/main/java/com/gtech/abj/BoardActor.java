@@ -10,6 +10,7 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+
 import static com.gtech.abj.BJProtocol.*;
 
 
@@ -20,6 +21,8 @@ private final LoggingAdapter log =
         Logging.getLogger(getContext().system(), this);
 
 public static Props props() {return Props.create(BoardActor.class); }
+
+private static final int BUST_THRESHOLD = 21;
 
 
 private final PlayerData dealer;
@@ -65,7 +68,7 @@ public void onReceive(final Object message) throws Exception {
         //TODO: assert currentPlayer.ref = sender()
         
         dealCardTo(currentPlayer);
-        if (currentPlayer.hand.score() > 21) {
+        if (currentPlayer.hand.score() > BUST_THRESHOLD) {
             log.info("Player {} busted!", currentPlayer);
             playingOrder.pop();
         }
@@ -84,11 +87,14 @@ public void onReceive(final Object message) throws Exception {
 /** Two french decks = 104 cards. */
 private static final int NO_OF_DECKS = 2;
 private void startGame() {
-    log.debug("Inside startGame");
+    log.info("Game is starting!");
     gameStarted = true;
-    dealer.reset();
     deck = new BJDeck(NO_OF_DECKS);
+    
+    
+    dealer.reset();
     for (PlayerData player : playingPlayers) player.reset();
+    
     for (ActorRef player : waitingPlayers) {
         playingPlayers.add(new PlayerData(player));
     }
@@ -98,6 +104,7 @@ private void startGame() {
     letsBet();
 }
 private void letsBet() {
+    log.info("People, let's bet!");
     for (PlayerData player : playingPlayers) {
         player.ref.tell(new AskBet(), self());
     }
@@ -105,6 +112,7 @@ private void letsBet() {
 
 
 private void handleBet(final Bet bet) {
+    log.info("A bet was placed: {}", bet);
     
     //TODO: timer to kick non-betting players out
     
@@ -129,6 +137,7 @@ private void registerBet(final Bet bet) {
 }
 
 private void dealCards() {
+    log.debug("Dealing cards");
     for (PlayerData player : playingPlayers) dealCardTo(player);
     dealCardTo(dealer);
     for (PlayerData player : playingPlayers) dealCardTo(player);
@@ -136,6 +145,7 @@ private void dealCards() {
 
 //XXX: toolong
 private void sortPlayersByScore() {
+    log.debug("Sorting players by score");
     Integer[] playingOrderArray = new Integer[playingPlayers.size()];
     for (int i = 0; i < playingOrderArray.length; i++) {
         playingOrderArray[i] = Integer.valueOf(i);
@@ -156,6 +166,7 @@ private void sortPlayersByScore() {
 
 
 private void dealCardTo(final PlayerData player) {
+    log.debug("Dealing a card to {}", player);
     FrenchCard drawnCard = deck.draw();
     player.hand.addCard(drawnCard);
     player.ref.tell(new CardDealt(drawnCard), self());    
@@ -163,11 +174,20 @@ private void dealCardTo(final PlayerData player) {
 
 
 private void nextPlay() {
+    log.debug("Next play");
     if (!playingOrder.isEmpty()) {
         playingPlayers.get(playingOrder.peek()).ref.tell(
                 new HitOrStand(), self());
     } else {
         //dealersTurn();
     }
+}
+
+private boolean areTherePlayersStillInTheGame() {
+    log.debug("Are there players still in the game?");
+    for (PlayerData player : playingPlayers) {
+        if (player.hand.score() <= BUST_THRESHOLD) return true;
+    }
+    return false;
 }
 }

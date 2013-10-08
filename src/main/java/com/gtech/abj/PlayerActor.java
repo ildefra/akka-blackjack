@@ -56,6 +56,7 @@ public void onReceive(final Object message) throws Exception {
     } else unhandled(message);
 }
 private boolean shouldHit() {
+    log.debug("Should I hit?");
     return new Random().nextInt(2) > 0;
 }
 }
