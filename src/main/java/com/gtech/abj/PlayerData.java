@@ -22,4 +22,10 @@ public void reset() {
     bet = 0;
     cards = new ArrayList<FrenchCard>();
 }
+
+public int score() {
+    int score = 0;
+    for (FrenchCard card : cards) score += card.rank.value;
+    return score;
+}
 }

@@ -7,6 +7,8 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
+import static com.gtech.abj.BJProtocol.*;
+
 
 public class DealerActor extends UntypedActor {
 
@@ -30,6 +32,8 @@ public DealerActor() {
 @Override
 public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
-    unhandled(message);
+    if (message instanceof CardDealt) {
+        cards.add(((CardDealt) message).card);
+    } else unhandled(message);
 }
 }

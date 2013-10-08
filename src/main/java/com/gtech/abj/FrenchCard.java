@@ -8,10 +8,10 @@ SIX('6', 6),    SEVEN('7', 7),  EIGHT('8', 8),  NINE('9', 9),
 TEN('T', 10),   JACK('J', 10),  QUEEN('Q', 10), KING('K', 10),  ACE('A', 1);
 
 /** User-friendly representation. For logging purposes mainly. */
-private final char code;
+private final char      code;
 
 /** Blackjack value. */
-private final int  value;
+public final int        value;
 
 private FrenchRank(final char code, final int value) {
     this.code   = code;
