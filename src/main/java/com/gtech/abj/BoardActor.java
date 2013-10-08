@@ -50,7 +50,7 @@ public BoardActor() {
 public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
     if (message instanceof RegisterPlayer) {
-        waitingPlayers.add(getSender());
+        waitingPlayers.add(sender());
         if (!gameStarted) startGame();  //TODO: timer to wait for other players
     } if (message instanceof Bet) {
         handleBet((Bet) message);
@@ -98,9 +98,7 @@ private void handleBet(final Bet bet) {
 
 private void registerBet(final Bet bet) {
     for (PlayerData player : playingPlayers) {
-        if (player.ref.equals(getSender())) {
-            player.bet = bet.amount;
-        }
+        if (player.ref.equals(sender())) player.bet = bet.amount;
         break;
     }
 }

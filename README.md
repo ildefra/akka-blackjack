@@ -1,4 +1,4 @@
 akka-blackjack
 ==============
 
-Multiplayer blackjack simulator. Training project, implemented in Java + Akka.
+Multiplayer blackjack game engine. Training project, implemented in Java + Akka.

@@ -5,6 +5,10 @@ import java.util.List;
 import akka.actor.ActorRef;
 
 
+/**
+ * Game data about playing players, dealer included. For the dealer {@link #bet}
+ * is always 0.
+ */
 public class PlayerData {
 
 public int bet;

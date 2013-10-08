@@ -1,5 +1,6 @@
 package com.gtech.abj;
 
+/** OSGi bundle service interface. */
 public interface InstantiateDealer {
 
 /**
