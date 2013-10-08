@@ -9,7 +9,7 @@
 	<groupId>com.gtech.example</groupId>
 	<artifactId>akka-blackjack</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.5</version>
+	<version>0.6</version>
 	<name>Blackjack engine</name>
 
     <properties>

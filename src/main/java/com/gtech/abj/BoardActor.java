@@ -166,7 +166,7 @@ private void sortPlayersByScore() {
         public int compare(final Integer i1, final Integer i2) {
             int score1 = playingPlayers.get(i1).hand.score();
             int score2 = playingPlayers.get(i2).hand.score();
-            return Integer.compare(score1, score2);
+            return Integer.valueOf(score1).compareTo(Integer.valueOf(score2));
         }
     });
     
