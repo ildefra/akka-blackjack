@@ -46,8 +46,27 @@ public String toString() {
 }
 }
 
-//dealcard
 
-//hitorstand
+public static final class CardDealt implements Serializable {
+private static final long serialVersionUID = 984747865374446469L;
+
+public final FrenchCard card;
+
+public CardDealt(final FrenchCard card) {this.card = card; }
+
+@Override
+public String toString() {
+    return "CardDealt{" + "card='" + card + '\'' + '}';
+}
+}
+
+
+public static final class HitOrStand implements Serializable {
+private static final long serialVersionUID = 3114574104726567430L;
+
+@Override
+public String toString() {return "HitOrStand"; }
+}
+
 
 }

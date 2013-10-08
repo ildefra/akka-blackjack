@@ -8,6 +8,7 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+
 import static com.gtech.abj.BJProtocol.*;
 
 
@@ -41,6 +42,7 @@ public void preStart() {
 /**
  * Defines actor's reactions to messages.
  * <ol>
+ * {@link AskBet} -> replies with a {@link Bet} with a random amount
  * </ol>
  */
 @Override
