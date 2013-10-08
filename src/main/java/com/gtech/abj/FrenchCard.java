@@ -20,7 +20,17 @@ public String toString() { return String.valueOf(code); }
 }
 
 
-public enum FrenchSuit {HEART, DIAMOND, CLUB, SPADE }
+public enum FrenchSuit {
+HEART('h'), DIAMOND('d'), CLUB('c'), SPADE('s');
+
+private final char code;
+
+private FrenchSuit(final char code) {this.code = code; }
+
+
+@Override
+public String toString() { return String.valueOf(code); }
+}
 
 
 public final FrenchRank rank;
@@ -30,4 +40,7 @@ public FrenchCard(final FrenchRank rank, final FrenchSuit suit) {
     this.rank = rank;
     this.suit = suit;
 }
+
+@Override
+public String toString() { return "" + rank + suit; }
 }
