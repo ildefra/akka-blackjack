@@ -69,4 +69,20 @@ public String toString() {return "HitOrStand"; }
 }
 
 
+public static final class Hit implements Serializable {
+private static final long serialVersionUID = -1893524193643930249L;
+
+@Override
+public String toString() {return "Hit"; }
+}
+
+
+public static final class Stand implements Serializable {
+private static final long serialVersionUID = -6173822909172912895L;
+
+@Override
+public String toString() {return "Stand"; }
+}
+
+
 }
