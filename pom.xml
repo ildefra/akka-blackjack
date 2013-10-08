@@ -9,30 +9,44 @@
 	<groupId>com.gtech.example</groupId>
 	<artifactId>akka-blackjack</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.6</version>
+	<version>0.8.1</version>
 	<name>Blackjack engine</name>
 
     <properties>
-        <akkaVersion>2.2.1</akkaVersion>
+        <akka.version>2.2.1</akka.version>
+        <osgi.version>5.0.0</osgi.version>
+        <bundle.namespace>com.gtech.abj</bundle.namespace>
     </properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-actor_2.10</artifactId>
-			<version>${akkaVersion}</version>
+			<version>${akka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-remote_2.10</artifactId>
-			<version>${akkaVersion}</version>
+			<version>${akka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-osgi_2.10</artifactId>
+            <version>${akka.version}</version>
         </dependency>
 
 		<dependency>
-			<groupId>org.apache.felix</groupId>
+			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
-			<version>1.4.0</version>
+			<version>${osgi.version}</version>
 		</dependency>
+		
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.foundation</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>
@@ -43,11 +57,46 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>com.gtech.abj.api</Export-Package>
-						<Private-Package>com.gtech.abj.*</Private-Package>
-						<Bundle-Activator>com.gtech.abj.osgi.Activator</Bundle-Activator>
+						<Export-Package>${bundle.namespace}.api
+<!--
+com.gtech.abj.api;
+akka.*;
+com.google.protobuf;
+com.typesafe.config.*;
+org.jboss.netty.*;
+javax.servlet.http;
+org.apache.commons.logging;
+org.apache.log4j;
+org.jboss.*
+-->
+						</Export-Package>
+						<Private-Package>${bundle.namespace}.*</Private-Package>
+                        <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
+					
+<!--
+embed compile/runtime dependencies using path that matches the copied
+dependency folder
+-->
+						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						
+						<Embed-Directory>target/dependency</Embed-Directory>
+						<Embed-StripGroup>true</Embed-StripGroup>
 					</instructions>
 				</configuration>
+            </plugin>
+		
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
