@@ -45,7 +45,7 @@ public void preStart() {
  */
 @Override
 public void onReceive(final Object message) throws Exception {
-    log.debug("received message {}", message);
+    log.debug("received message {} from {}", message, sender());
     if (message instanceof Reset) {
         hand.reset();
     } else if (message instanceof AskBet) {
