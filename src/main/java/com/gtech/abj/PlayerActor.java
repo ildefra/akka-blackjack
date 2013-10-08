@@ -61,6 +61,7 @@ public void onReceive(final Object message) throws Exception {
         sender().tell(new Bet(new Random().nextInt(10) + 1), self());
     } else if (message instanceof CardDealt) {
         hand.addCard(((CardDealt) message).card);
+        log.info("I received a card, my hand is now: {}", hand);
     } else if (message instanceof HitOrStand) {
         sender().tell(
                 shouldHit() ? new PlayerStand() : new PlayerHit(), self());

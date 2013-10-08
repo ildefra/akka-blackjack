@@ -16,4 +16,11 @@ public int score() {
     for (FrenchCard card : cards) score += card.rank.value;
     return score;
 }
+
+@Override
+public String toString() {
+    String s = "";
+    for (FrenchCard card : cards) s += card + " ";
+    return s;
+}
 }

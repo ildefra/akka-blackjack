@@ -41,6 +41,7 @@ public void onReceive(final Object message) throws Exception {
         hand.reset();
     } else if (message instanceof CardDealt) {
         hand.addCard(((CardDealt) message).card);
+        log.info("I received a card, my hand is now: {}", hand);
     } else if (message instanceof HitOrStand) {
         sender().tell(
                 shouldHit() ? new DealerHit() : new DealerStand(), null);
