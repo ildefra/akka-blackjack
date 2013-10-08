@@ -1,4 +1,4 @@
-package com.gtech.abj.osgi;
+package com.gtech.abj.api;
 
 import com.gtech.abj.DealerActor;
 
