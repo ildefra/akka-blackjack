@@ -8,8 +8,8 @@
 	
 	<groupId>com.gtech.example</groupId>
 	<artifactId>akka-blackjack</artifactId>
-	<packaging>jar</packaging>
-	<version>0.3</version>
+	<packaging>jar</packaging> <!-- change to 'bundle' -->
+	<version>0.3.1</version>
 	<name>Blackjack engine</name>
 
     <properties>
@@ -26,6 +26,27 @@
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-remote_2.10</artifactId>
 			<version>${akkaVersion}</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>1.0.0</version> <!-- is it latest version? -->
 		</dependency>
 	</dependencies>
+
+	<plugins>
+		<plugin>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>maven-bundle-plugin</artifactId>
+			<extensions>true</extensions>
+			<configuration>
+				<instructions>
+					<Export-Package>com.gtech.abj.api</Export-Package>
+					<Private-Package>com.gtech.abj.*</Private-Package>
+					<Bundle-Activator>com.gtech.abj.osgi.Activator</Bundle-Activator>
+				</instructions>
+			</configuration>
+		</plugin>
+	</plugins>
 </project>
