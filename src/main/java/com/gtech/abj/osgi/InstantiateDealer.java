@@ -1,4 +1,6 @@
-package com.gtech.abj;
+package com.gtech.abj.osgi;
+
+import com.gtech.abj.DealerActor;
 
 /** OSGi bundle service interface. */
 public interface InstantiateDealer {
