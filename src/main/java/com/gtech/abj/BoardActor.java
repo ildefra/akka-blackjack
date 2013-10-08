@@ -66,14 +66,13 @@ public void onReceive(final Object message) throws Exception {
         
         dealCardTo(currentPlayer);
         if (currentPlayer.hand.score() > 21) {
-            //pop and log
+            log.info("Player {} busted!", currentPlayer);
+            playingOrder.pop();
         }
-        //if stack nn vuota peek ! hitorstand
-        //passalapallaaldealer
+        nextPlay();
     } if (message instanceof PlayerStand) {
-        //pop
-        //if stack nn vuota peek ! hitorstand
-        //passalapallaaldealer
+        playingOrder.pop();
+        nextPlay();
     } if (message instanceof DealerHit) {
         //?
     } if (message instanceof DealerStand) {
@@ -119,7 +118,7 @@ private void handleBet(final Bet bet) {
     
     dealCards();
     sortPlayersByScore();
-    playingPlayers.get(playingOrder.peek()).ref.tell(new HitOrStand(), self());
+    nextPlay();
 }
 
 private void registerBet(final Bet bet) {
@@ -160,5 +159,15 @@ private void dealCardTo(final PlayerData player) {
     FrenchCard drawnCard = deck.draw();
     player.hand.addCard(drawnCard);
     player.ref.tell(new CardDealt(drawnCard), self());    
+}
+
+
+private void nextPlay() {
+    if (!playingOrder.isEmpty()) {
+        playingPlayers.get(playingOrder.peek()).ref.tell(
+                new HitOrStand(), self());
+    } else {
+        //dealersTurn();
+    }
 }
 }
