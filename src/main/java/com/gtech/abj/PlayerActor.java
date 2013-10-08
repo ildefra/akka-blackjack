@@ -54,7 +54,7 @@ public void onReceive(final Object message) throws Exception {
         cards.add(((CardDealt) message).card);
     } else if (message instanceof HitOrStand) {
         sender().tell(
-                new Random().nextInt(2) == 0 ? new Stand() : new Hit(), self());
+                new Random().nextInt(2) == 0 ? new PlayerStand() : new PlayerHit(), self());
     } else unhandled(message);
 
 }

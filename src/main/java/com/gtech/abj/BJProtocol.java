@@ -69,21 +69,39 @@ public String toString() {return "HitOrStand"; }
 }
 
 
-/** Asking for another card. */
-public static final class Hit implements Serializable {
+/** Player asking for another card. */
+public static final class PlayerHit implements Serializable {
 private static final long serialVersionUID = -1893524193643930249L;
 
 @Override
-public String toString() {return "Hit"; }
+public String toString() {return "PlayerHit"; }
 }
 
 
-/** No more cards. */
-public static final class Stand implements Serializable {
+/** Player wants no more cards. */
+public static final class PlayerStand implements Serializable {
 private static final long serialVersionUID = -6173822909172912895L;
 
 @Override
-public String toString() {return "Stand"; }
+public String toString() {return "PlayerStand"; }
+}
+
+
+/** Dealer asking for another card. */
+public static final class DealerHit implements Serializable {
+private static final long serialVersionUID = -8934413265015413020L;
+
+@Override
+public String toString() {return "DealerHit"; }
+}
+
+
+/** Dealer wants no more cards. */
+public static final class DealerStand implements Serializable {
+private static final long serialVersionUID = 847810856690077721L;
+
+@Override
+public String toString() {return "DealerStand"; }
 }
 
 
