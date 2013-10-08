@@ -1,11 +1,10 @@
 package com.gtech.abj;
 
-import java.util.ArrayList;
-import java.util.List;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+
 import static com.gtech.abj.BJProtocol.*;
 
 
@@ -32,7 +31,9 @@ public DealerActor() {
 @Override
 public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
-    if (message instanceof CardDealt) {
+    if (message instanceof Reset) {
+        hand.reset();
+    } else if (message instanceof CardDealt) {
         hand.addCard(((CardDealt) message).card);
     } else if (message instanceof HitOrStand) {
         sender().tell(

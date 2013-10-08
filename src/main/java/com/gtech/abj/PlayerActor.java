@@ -46,7 +46,9 @@ public void preStart() {
 @Override
 public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
-    if (message instanceof AskBet) {
+    if (message instanceof Reset) {
+        hand.reset();
+    } else if (message instanceof AskBet) {
         sender().tell(new Bet(new Random().nextInt(10) + 1), self());
     } else if (message instanceof CardDealt) {
         hand.addCard(((CardDealt) message).card);

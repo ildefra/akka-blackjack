@@ -59,7 +59,7 @@ public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
     if (message instanceof RegisterPlayer) {
         waitingPlayers.add(sender());
-        if (!gameStarted) startGame();  //TODO: timer to wait for other players
+        if (!gameStarted) startNewGame();  //TODO: timer to wait for other players
     } if (message instanceof Bet) {
         handleBet((Bet) message);
     } if (message instanceof PlayerHit) {
@@ -86,14 +86,22 @@ public void onReceive(final Object message) throws Exception {
 
 /** Two french decks = 104 cards. */
 private static final int NO_OF_DECKS = 2;
-private void startGame() {
-    log.info("Game is starting!");
+
+//XXX: toolong
+private void startNewGame() {
+    log.info("A new game is starting!");
     gameStarted = true;
     deck = new BJDeck(NO_OF_DECKS);
     
     
     dealer.reset();
-    for (PlayerData player : playingPlayers) player.reset();
+    dealer.ref.tell(new Reset(), self());
+    
+    for (PlayerData player : playingPlayers) {
+        player.reset();
+        player.ref.tell(new Reset(), self());
+    }
+    
     
     for (ActorRef player : waitingPlayers) {
         playingPlayers.add(new PlayerData(player));
@@ -179,7 +187,10 @@ private void nextPlay() {
         playingPlayers.get(playingOrder.peek()).ref.tell(
                 new HitOrStand(), self());
     } else {
-        //dealersTurn();
+        if (!areTherePlayersStillInTheGame()) startNewGame();
+        else {
+            dealer.ref.tell(new HitOrStand(), self());
+        }
     }
 }
 
