@@ -40,7 +40,16 @@ public void preStart() {
 /**
  * Defines actor's reactions to messages.
  * <ol>
+ * <li>{@link Reset} -> empties hand</li>
+ * <li>
  * {@link AskBet} -> replies with a {@link Bet} with a random amount
+ * </li>
+ * <li>{@link CardDealt} -> saves the card</li>
+ * <li>
+ * {@link HitOrStand} -> replies with {@link PlayerHit} or {@link PlayerStand}
+ * in a random fashion
+ * </li>
+ * <li>{@link YouWon} -> log message</li>
  * </ol>
  */
 @Override
@@ -55,6 +64,8 @@ public void onReceive(final Object message) throws Exception {
     } else if (message instanceof HitOrStand) {
         sender().tell(
                 shouldHit() ? new PlayerStand() : new PlayerHit(), self());
+    } else if (message instanceof YouWon) {
+        log.info("Hurray! I won {} dollars!", ((YouWon) message).amount);
     } else unhandled(message);
 }
 private boolean shouldHit() {

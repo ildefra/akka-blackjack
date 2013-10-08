@@ -113,4 +113,28 @@ public String toString() {return "DealerStand"; }
 }
 
 
+public static final class YouWon implements Serializable {
+private static final long serialVersionUID = 9149573130974388215L;
+
+public final int amount;
+
+/**
+ * Winning notification message.
+ * 
+ * @param amount        MUST be a positive number
+ */
+public YouWon(final int amount) {
+    if (amount < 1) {
+        throw new IllegalArgumentException("amount must be a positive number");
+    }
+    this.amount = amount;
+}
+
+@Override
+public String toString() {
+    return "YouWon{" + "amount='" + amount + '\'' + '}';
+}
+}
+
+
 }

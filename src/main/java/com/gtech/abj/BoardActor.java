@@ -51,7 +51,28 @@ public BoardActor() {
  * {@link RegisterPlayer} -> adds sender to list, starts the game if not already
  * started
  * </li>
- * <li>{@link Bet} -> registers bet, deal cards if last one</li>
+ * <li>
+ * {@link Bet} -> registers bet, if last one deal cards and then send
+ * {@link HitOrStand} to the player with the highest score
+ * </li>
+ * <li>
+ * {@link PlayerHit} -> deal card to player, then send {@link HitOrStand} to him
+ * if he did not bust, or else to next player (could be the dealer)
+ * </li>
+ * <li>
+ * {@link PlayerStand} -> send {@link HitOrStand} to next player (could be the
+ * dealer)
+ * </li>
+ * <li>
+ * {@link DealerHit} -> deal card to dealer, then send {@link HitOrStand} to him
+ * if he did not bust, or else every player wins double of his initial bet. A
+ * new game will be started soon
+ * </li>
+ * <li>
+ * {@link DealerStand} -> players with the dealer's score take back their money,
+ * players who have beaten him take back their money doubled. A new game will be
+ * started soon
+ * </li>
  * </ol>
  */
 @Override
@@ -72,11 +93,7 @@ public void onReceive(final Object message) throws Exception {
     } if (message instanceof DealerHit) {
         handleDealerHit();
     } if (message instanceof DealerStand) {
-        
-        //TODO: pay accordingly
-        log.info("Game has ended! Probably some player won some cash");
-        
-        startNewGame();
+        handleDealerStand();
     } else unhandled(message);
 }
 
@@ -92,11 +109,11 @@ private void startNewGame() {
     
     
     dealer.reset();
-    dealer.ref.tell(new Reset(), self());
+    dealer.ref.tell(new Reset(), null);
     
     for (PlayerData player : playingPlayers) {
         player.reset();
-        player.ref.tell(new Reset(), self());
+        player.ref.tell(new Reset(), null);
     }
     
     
@@ -191,13 +208,33 @@ private void handlePlayerHit() {
 private void handleDealerHit() {
     dealCardTo(dealer);
     if (dealer.hand.score() > BUST_THRESHOLD) {
-        log.info("Dealer busted!");
-        
-        //TODO: pay everyone
-        log.info("Game has ended! EVERYONE WON");
-        
+        log.info("Dealer busted!");        
+        for (PlayerData player : playingPlayers) {
+            if (player.hand.score() <= BUST_THRESHOLD) {
+                player.ref.tell(new YouWon(player.bet * 2), null);
+            }
+        }
         startNewGame();
     } else nextPlay();
+}
+
+
+private void handleDealerStand() {
+    log.info("Game has ended!");
+    int dealerScore = dealer.hand.score();
+    
+    for (PlayerData player : playingPlayers) {
+        int playerScore = player.hand.score();
+        if (playerScore <= BUST_THRESHOLD) {
+            if (playerScore == dealerScore) {
+                player.ref.tell(new YouWon(player.bet), null);
+            } else if (playerScore > dealerScore) {
+                player.ref.tell(new YouWon(player.bet * 2), null);
+            }
+        }
+    }
+    
+    startNewGame();
 }
 
 
@@ -205,7 +242,7 @@ private void dealCardTo(final PlayerData player) {
     log.debug("Dealing a card to {}", player);
     FrenchCard drawnCard = deck.draw();
     player.hand.addCard(drawnCard);
-    player.ref.tell(new CardDealt(drawnCard), self());    
+    player.ref.tell(new CardDealt(drawnCard), null);    
 }
 
 

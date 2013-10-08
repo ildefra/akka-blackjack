@@ -26,6 +26,12 @@ public DealerActor() {
 /**
  * Defines actor's reactions to messages.
  * <ol>
+ * <li>{@link Reset} -> empties hand</li>
+ * <li>{@link CardDealt} -> saves the card</li>
+ * <li>
+ * {@link HitOrStand} -> replies with {@link DealerHit} or {@link DealerStand}
+ * following the standard blackjack dealer logic
+ * </li>
  * </ol>
  */
 @Override
@@ -37,7 +43,7 @@ public void onReceive(final Object message) throws Exception {
         hand.addCard(((CardDealt) message).card);
     } else if (message instanceof HitOrStand) {
         sender().tell(
-                shouldHit() ? new DealerStand() : new DealerHit(), self());
+                shouldHit() ? new DealerHit() : new DealerStand(), null);
     } else unhandled(message);
 }
 private boolean shouldHit() {

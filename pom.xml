@@ -9,7 +9,7 @@
 	<groupId>com.gtech.example</groupId>
 	<artifactId>akka-blackjack</artifactId>
 	<packaging>bundle</packaging>
-	<version>0.8.1</version>
+	<version>1.0.0-alpha</version>
 	<name>Blackjack engine</name>
 
     <properties>
@@ -29,23 +29,20 @@
 			<artifactId>akka-remote_2.10</artifactId>
 			<version>${akka.version}</version>
         </dependency>
+        
+<!--
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-osgi_2.10</artifactId>
             <version>${akka.version}</version>
         </dependency>
+-->
 
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 			<version>${osgi.version}</version>
 		</dependency>
-		
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.osgi.foundation</artifactId>
-            <version>1.2.0</version>
-        </dependency>
 
 	</dependencies>
 
@@ -57,9 +54,9 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>${bundle.namespace}.api
-<!--
-com.gtech.abj.api;
+						<Export-Package>
+${bundle.namespace}.api;
+
 akka.*;
 com.google.protobuf;
 com.typesafe.config.*;
@@ -67,37 +64,18 @@ org.jboss.netty.*;
 javax.servlet.http;
 org.apache.commons.logging;
 org.apache.log4j;
-org.jboss.*
--->
+org.jboss.logging;
+org.jboss.marshalling;
+org.slf4j;
+org.uncommons.maths.*;
+scala.*;
+sun.misc;
 						</Export-Package>
 						<Private-Package>${bundle.namespace}.*</Private-Package>
-                        <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
-					
-<!--
-embed compile/runtime dependencies using path that matches the copied
-dependency folder
--->
-						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
-						<Embed-Transitive>true</Embed-Transitive>
-						
-						<Embed-Directory>target/dependency</Embed-Directory>
-						<Embed-StripGroup>true</Embed-StripGroup>
+                        <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>					
 					</instructions>
 				</configuration>
-            </plugin>
-		
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            </plugin>		
 		</plugins>
 	</build>
 </project>
