@@ -1,7 +1,5 @@
 package com.gtech.abj;
 
-import java.util.ArrayList;
-import java.util.List;
 import akka.actor.ActorRef;
 
 
@@ -12,20 +10,17 @@ import akka.actor.ActorRef;
 public class PlayerData {
 
 public int bet;
-public List<FrenchCard> cards = new ArrayList<FrenchCard>();
 
+public final BJHand hand;
 public final ActorRef ref;
 
-public PlayerData(final ActorRef ref) {this.ref = ref; }
+public PlayerData(final ActorRef ref) {
+    this.ref = ref;
+    hand = new BJHand();
+}
 
 public void reset() {
     bet = 0;
-    cards = new ArrayList<FrenchCard>();
-}
-
-public int score() {
-    int score = 0;
-    for (FrenchCard card : cards) score += card.rank.value;
-    return score;
+    hand.reset();
 }
 }

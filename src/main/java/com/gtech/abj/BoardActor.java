@@ -65,7 +65,7 @@ public void onReceive(final Object message) throws Exception {
         //TODO: assert currentPlayer.ref = sender()
         
         dealCardTo(currentPlayer);
-        if (currentPlayer.score() > 21) {
+        if (currentPlayer.hand.score() > 21) {
             //pop and log
         }
         //if stack nn vuota peek ! hitorstand
@@ -146,8 +146,8 @@ private void sortPlayersByScore() {
         
         @Override
         public int compare(final Integer i1, final Integer i2) {
-            int score1 = playingPlayers.get(i1).score();
-            int score2 = playingPlayers.get(i2).score();
+            int score1 = playingPlayers.get(i1).hand.score();
+            int score2 = playingPlayers.get(i2).hand.score();
             return Integer.compare(score1, score2);
         }
     });
@@ -158,7 +158,7 @@ private void sortPlayersByScore() {
 
 private void dealCardTo(final PlayerData player) {
     FrenchCard drawnCard = deck.draw();
-    player.cards.add(drawnCard);
+    player.hand.addCard(drawnCard);
     player.ref.tell(new CardDealt(drawnCard), self());    
 }
 }

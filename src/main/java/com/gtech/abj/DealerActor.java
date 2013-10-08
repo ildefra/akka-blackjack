@@ -6,7 +6,6 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-
 import static com.gtech.abj.BJProtocol.*;
 
 
@@ -18,9 +17,10 @@ private final LoggingAdapter log =
 public static Props props() {return Props.create(DealerActor.class); }
 
 
-private List<FrenchCard> cards = new ArrayList<FrenchCard>();
+private final BJHand hand;
 
 public DealerActor() {
+    hand = new BJHand();
     log.info("created dealer {}", this);
 }
 
@@ -33,16 +33,13 @@ public DealerActor() {
 public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
     if (message instanceof CardDealt) {
-        cards.add(((CardDealt) message).card);
+        hand.addCard(((CardDealt) message).card);
     } else if (message instanceof HitOrStand) {
         sender().tell(
                 shouldHit() ? new DealerStand() : new DealerHit(), self());
     } else unhandled(message);
 }
-private boolean shouldHit() {
-    
-    //TODO: dealer logic
-    
-    return false;
+private boolean shouldHit() {    
+    return hand.score() < 17;
 }
 }

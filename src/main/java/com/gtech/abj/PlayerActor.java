@@ -1,7 +1,5 @@
 package com.gtech.abj;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import akka.actor.ActorRef;
 import akka.actor.Props;
@@ -23,11 +21,11 @@ public static Props props(final ActorRef board) {
 
 
 private final ActorRef board;
-
-private List<FrenchCard> cards = new ArrayList<FrenchCard>();
+private final BJHand hand;
 
 public PlayerActor(final ActorRef board) {
     this.board = board;
+    hand = new BJHand();
     log.info("created player {}", this);
 }
 
@@ -51,7 +49,7 @@ public void onReceive(final Object message) throws Exception {
     if (message instanceof AskBet) {
         sender().tell(new Bet(new Random().nextInt(10) + 1), self());
     } else if (message instanceof CardDealt) {
-        cards.add(((CardDealt) message).card);
+        hand.addCard(((CardDealt) message).card);
     } else if (message instanceof HitOrStand) {
         sender().tell(
                 shouldHit() ? new PlayerStand() : new PlayerHit(), self());
