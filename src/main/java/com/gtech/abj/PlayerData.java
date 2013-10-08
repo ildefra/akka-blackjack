@@ -23,4 +23,10 @@ public void reset() {
     bet = 0;
     hand.reset();
 }
+
+@Override
+public String toString() {
+    return String.format("PlayerData - bet = %d, hand = '%s', ref = '%s'",
+            bet, hand, ref);
+}
 }

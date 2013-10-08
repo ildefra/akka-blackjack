@@ -123,6 +123,7 @@ private void handleBet(final Bet bet) {
     
     registerBet(bet);
     
+    
     boolean everyoneHasBet = true;
     for (PlayerData player : playingPlayers) {
         if (player.bet == 0) everyoneHasBet = false;
@@ -135,9 +136,12 @@ private void handleBet(final Bet bet) {
 }
 
 private void registerBet(final Bet bet) {
+    log.debug("registerBet loop");
     for (PlayerData player : playingPlayers) {
-        if (player.ref.equals(sender())) player.bet = bet.amount;
-        break;
+        if (player.ref.equals(sender())) {
+            player.bet = bet.amount;
+            break;
+        }
     }
 }
 
