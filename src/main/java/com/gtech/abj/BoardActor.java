@@ -55,6 +55,7 @@ public void onReceive(final Object message) throws Exception {
 }
 
 
+/** Two french decks = 104 cards. */
 private static final int NO_OF_DECKS = 2;
 private void startGame() {
     log.debug("Inside startGame");

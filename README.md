@@ -1,4 +1,4 @@
 akka-blackjack
 ==============
 
-simple training akka project
+Multiplayer blackjack simulator. Training project, implemented in Java + Akka.
