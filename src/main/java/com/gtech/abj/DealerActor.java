@@ -34,6 +34,15 @@ public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
     if (message instanceof CardDealt) {
         cards.add(((CardDealt) message).card);
+    } else if (message instanceof HitOrStand) {
+        sender().tell(
+                shouldHit() ? new DealerStand() : new DealerHit(), self());
     } else unhandled(message);
+}
+private boolean shouldHit() {
+    
+    //TODO: dealer logic
+    
+    return false;
 }
 }
