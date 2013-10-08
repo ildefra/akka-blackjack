@@ -22,9 +22,9 @@ public static Props props(final ActorRef board) {
 }
 
 
-private List<FrenchCard> cards = new ArrayList<FrenchCard>();
-
 private final ActorRef board;
+
+private List<FrenchCard> cards = new ArrayList<FrenchCard>();
 
 public PlayerActor(final ActorRef board) {
     this.board = board;

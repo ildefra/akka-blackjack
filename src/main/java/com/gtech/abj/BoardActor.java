@@ -19,12 +19,15 @@ private final LoggingAdapter log =
 public static Props props() {return Props.create(BoardActor.class); }
 
 
-private BJDeck                  deck;
-private List<PlayerData>        playingPlayers = new ArrayList<PlayerData>();
-private List<ActorRef>          waitingPlayers = new ArrayList<ActorRef>();
-private boolean                 gameStarted;
-
 private final PlayerData dealer;
+
+/** Players in current game. Added in registration order. */
+private List<PlayerData>        playingPlayers = new ArrayList<PlayerData>();
+
+private List<ActorRef>          waitingPlayers = new ArrayList<ActorRef>();
+
+private BJDeck                  deck;
+private boolean                 gameStarted;
 
 public BoardActor() {
     dealer =
@@ -68,7 +71,7 @@ private void startGame() {
     }
     waitingPlayers.clear();
     
-    dealCardTo(dealer);
+    dealCardTo(dealer); //dealer is dealt a (covered) card immediately
     letsBet();
 }
 private void letsBet() {

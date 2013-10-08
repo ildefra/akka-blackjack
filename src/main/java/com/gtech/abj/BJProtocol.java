@@ -69,6 +69,7 @@ public String toString() {return "HitOrStand"; }
 }
 
 
+/** Asking for another card. */
 public static final class Hit implements Serializable {
 private static final long serialVersionUID = -1893524193643930249L;
 
@@ -77,6 +78,7 @@ public String toString() {return "Hit"; }
 }
 
 
+/** No more cards. */
 public static final class Stand implements Serializable {
 private static final long serialVersionUID = -6173822909172912895L;
 
