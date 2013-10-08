@@ -3,13 +3,14 @@ package com.gtech.abj;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 import com.gtech.abj.FrenchCard.FrenchRank;
 import com.gtech.abj.FrenchCard.FrenchSuit;
 
 
 public class BJDeck {
 
-private List<FrenchCard> cards = new ArrayList<FrenchCard>();
+private Stack<FrenchCard> cards = new Stack<FrenchCard>();
 
 public BJDeck(final int noOfDecks) {
     for (int i = 0; i < noOfDecks; i++) addDeck();
@@ -23,5 +24,5 @@ private void addDeck() {
     }
 }
 
-//carta
+public FrenchCard draw() {return cards.pop(); }
 }
