@@ -59,27 +59,24 @@ public void onReceive(final Object message) throws Exception {
     log.debug("received message {}", message);
     if (message instanceof RegisterPlayer) {
         waitingPlayers.add(sender());
-        if (!gameStarted) startNewGame();  //TODO: timer to wait for other players
+        
+        //TODO: timer to wait for other players
+        if (!gameStarted) startNewGame();
     } if (message instanceof Bet) {
         handleBet((Bet) message);
     } if (message instanceof PlayerHit) {
-        PlayerData currentPlayer = playingPlayers.get(playingOrder.peek());
-        
-        //TODO: assert currentPlayer.ref = sender()
-        
-        dealCardTo(currentPlayer);
-        if (currentPlayer.hand.score() > BUST_THRESHOLD) {
-            log.info("Player {} busted!", currentPlayer);
-            playingOrder.pop();
-        }
-        nextPlay();
+        handlePlayerHit();
     } if (message instanceof PlayerStand) {
         playingOrder.pop();
         nextPlay();
     } if (message instanceof DealerHit) {
-        //?
+        handleDealerHit();
     } if (message instanceof DealerStand) {
-        //?
+        
+        //TODO: pay accordingly
+        log.info("Game has ended! Probably some player won some cash");
+        
+        startNewGame();
     } else unhandled(message);
 }
 
@@ -170,6 +167,33 @@ private void sortPlayersByScore() {
     });
     
     for (Integer pos : playingOrderArray) playingOrder.push(pos);
+}
+
+
+private void handlePlayerHit() {
+    PlayerData currentPlayer = playingPlayers.get(playingOrder.peek());
+    
+    //TODO: assert currentPlayer.ref = sender()
+    
+    dealCardTo(currentPlayer);
+    if (currentPlayer.hand.score() > BUST_THRESHOLD) {
+        log.info("Player {} busted!", currentPlayer);
+        playingOrder.pop();
+    }
+    nextPlay();
+}
+
+
+private void handleDealerHit() {
+    dealCardTo(dealer);
+    if (dealer.hand.score() > BUST_THRESHOLD) {
+        log.info("Dealer busted!");
+        
+        //TODO: pay everyone
+        log.info("Game has ended! EVERYONE WON");
+        
+        startNewGame();
+    } else nextPlay();
 }
 
 
